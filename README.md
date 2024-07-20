@@ -45,6 +45,19 @@ Phoenix's search and retrieval optimization tools include an embeddings visualiz
 
 ![phoenix-arise](images/phoenix-arise.png)
 
+##### Usage
+To see and example of tracing, run:
+```commandline
+python scripts/phoenix-tracing.py
+```
+
+
+To see and example of evaluation, run:
+```commandline
+python scripts/phoenix-evals.py
+```
+
+
 ### Other open Source Candidates - TBD
 
 
