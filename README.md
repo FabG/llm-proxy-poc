@@ -65,6 +65,9 @@ python scripts/phoenix-evals.py
 ```
 You can view the traces at `http://localhost:6006/`. Make sure to select `All Time` in the top right corner.
 
+You can also view this [eval notebook](notebooks/evals_quickstart_fab.ipynb)
+
+### Phoenix Traces and Evaluation lifecycle 
 
 <img src="images/phoenix-arise.png" alt="phoenix-arise" width="700"/>
 
