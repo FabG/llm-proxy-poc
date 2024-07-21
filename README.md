@@ -46,10 +46,11 @@ Phoenix's search and retrieval optimization tools include an embeddings visualiz
 ![phoenix-arise](images/phoenix-arise.png)
 
 ##### Usage
-To see and example of tracing, run:
+To see and example of tracing with `OpenAI`, run:
 ```commandline
 python scripts/phoenix-tracing.py
 ```
+You can start a chat with OpenAI and see live the prompts and answers in the Phoenix webapp - by default at `http://localhost:6006/`
 
 
 To see and example of evaluation, run:
