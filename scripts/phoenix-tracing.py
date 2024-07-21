@@ -42,3 +42,5 @@ while(message["content"]!="###"):
 
 # Note that you can apply a filter if you would like to export only a sub-set of spans
 # df = px.Client().get_spans_dataframe('span_kind == "RETRIEVER"')
+
+px.close_app()

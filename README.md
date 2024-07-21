@@ -43,9 +43,11 @@ Phoenix's search and retrieval optimization tools include an embeddings visualiz
 - **Fine tuning**: Phoenix and Arize together help teams identify data points for fine-tuning based on production performance and user feedback. This targeted approach ensures that fine-tuning efforts are directed towards the most impactful areas, maximizing the return on investment.
 
 
-![phoenix-arise](images/phoenix-arise.png)
 
-##### Usage
+##### Tracing Example
+Check [Traces overview](https://docs.arize.com/phoenix/tracing/llm-traces) for an overview of Phoenix Tracing.
+Also check the [notebook tracing examples](https://github.com/Arize-ai/phoenix/tree/main/tutorials/tracing).  
+
 To see and example of tracing with `OpenAI`, run:
 ```commandline
 python scripts/phoenix-tracing.py
@@ -53,10 +55,18 @@ python scripts/phoenix-tracing.py
 You can start a chat with OpenAI and see live the prompts and answers in the Phoenix webapp - by default at `http://localhost:6006/`
 
 
+##### Evaluation Example
+Check [Evals overview](https://docs.arize.com/phoenix/evaluation/llm-evals) for an overview of Phoenix evals with use of LLMs.
+Also check the [notebook eval examples](https://github.com/Arize-ai/phoenix/tree/main/tutorials/evals).  
+
 To see and example of evaluation, run:
 ```commandline
 python scripts/phoenix-evals.py
 ```
+You can view the traces at `http://localhost:6006/`. Make sure to select `All Time` in the top right corner.
+
+
+<img src="images/phoenix-arise.png" alt="phoenix-arise" width="700"/>
 
 
 ### Other open Source Candidates - TBD

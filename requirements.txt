@@ -2,10 +2,4 @@ openai
 arize-phoenix[evals]
 numpy==1.23.1
 scikit-learn==1.2.0
-langchain
-langchain-community
-langchainhub
-langchain-openai
-langchain-chroma
-bs4
 
