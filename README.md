@@ -20,16 +20,13 @@ per our needs
 
 #### Open source Candidate #1 - Arize Phoeniz
 
-One good open source candidate is [Phoenix](https://docs.arize.com/phoenix). It is an AI observability platform designed for experimentation, 
+One good open source candidate is [Phoenix](https://docs.arize.com/phoenix). It is an open-source AI observability platform designed for experimentation, 
 evaluation, and troubleshooting. It provides:
 - Tracing - Trace your LLM application's runtime using OpenTelemetry-based instrumentation.
 - Evaluation - Leverage LLMs to benchmark your application's performance using response and retrieval evals.
 - Datasets - Create versioned datasets of examples for experimentation, evaluation, and fine-tuning.
 - Experiments - Track and evaluate changes to prompts, LLMs, and retrieval.
 - Inference Analysis - Visualize inferences and embeddings using dimensionality reduction and clustering to identify drift and performance degradation.
-
-For our POC where we had planned to deploy an ECS cluster along with Postgrest for persistence, it can be deployed there as a docker image.  
-See [environments](https://docs.arize.com/phoenix/setup/environments)
 
 
 Its [User Guide](https://docs.arize.com/phoenix/user-guide) indicates some interesting capabilities or our POC, namely:
@@ -67,6 +64,16 @@ You can view the traces at `http://localhost:6006/`. Make sure to select `All Ti
 
 You can also view this [eval notebook](notebooks/evals_quickstart_fab.ipynb)
 
+For an example of evaluation of hallucinations, check [hallucination evals notebook](notebooks/evaluate_hallucination_classifications.ipynb)
+For an example of evaluation of text summarization, check [summarization evals notebook](notebooks/evaluate_summarization_classifications.ipynb)
+
+### Phoenix Tech Stack, Integration and deployment.
+ 
+ - Phoenix can natively be backed by PostgreSQL - we just need to set the `PHOENIX_SQL_DATABASE_URL` to our PostgreSQL instance
+ - It can also be deployed via `docker` and hence hosted in some compute - we plan on using ECS - see [docker phoenix](https://docs.arize.com/phoenix/deployment/docker)
+ - The back-end is in `python`
+ - The UI is a `react` app built on top of a `graphql` API. See [web app phoneix code](https://github.com/Arize-ai/phoenix/tree/main/app) for more info
+ - The tracing is done with [OpenInference](https://github.com/Arize-ai/openinference?tab=readme-ov-file) and is complimentary to [OpenTelemetry](https://opentelemetry.io/) we are already using for Observability
 ### Phoenix Traces and Evaluation lifecycle 
 
 <img src="images/phoenix-arise.png" alt="phoenix-arise" width="700"/>
