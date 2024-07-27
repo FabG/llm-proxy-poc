@@ -3,3 +3,7 @@ arize-phoenix[evals]
 numpy==1.23.1
 scikit-learn==1.2.0
 nest_asyncio
+langchain>=0.1.0
+tiktoken
+boto3
+langchain-community
