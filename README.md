@@ -1,27 +1,45 @@
 # LLM Proxy POC
 
-This repo includes POC code for a transparent proxy across various LLM vendors such as OpenAI, BedRock,..
-Key focus on this POC is around:
- - request/response tracking
- - persistence in a data store for future use in data annotation
- - light UI for data annotation from a dat analyst
+This repo includes some notebooks and code to showcase the capabilities of various open source packages, 
+that can be candidate to build a transparent proxy across various LLM vendors such as OpenAI, BedRock,..  
 
-The first versio of this POC is NOT:
+**Key functionality** of the packages being evaluated are:
+ - LLM prompt and response **tracing**
+ - Basic observability metrics **tracing** (latency, # of tokens used,...)
+ - Dataset creation and Data **annotation** 
+ - LLM Response **evaluation** leveraging other LLMs and golden datasets
+ - SPA **UI** for easy review, annotation,... of the traces, datasets, evaluations,...
+ - Ease of integration in consumer code - there should be no change to the LLM API code
+
+**Nice to Have**:
+ - leverage industry standards such as OpenTelemetry
+ - Stack aligned with ours: hosting in `AWS`, back-end preferably in `python`, `containerized` and front-end preferably in `react.js`
+
+**Out of Scope**:
  - providing a consistent interface across LLM vendors. It is a *transparent* proxy.
- - capturing usage and cost metrics (observability)
 
-### Approach to POC
-We will:
- - leverage some of the existing open source packages, and select the few that meet some of our requirments, then fork and update the code 
-per our needs
- - first integrate with OpenAI (then Bedrock and other providers)
-
+**Integration and Productization in the Cloud**:
+ - First Integration will be with Azure OpenAI, then AWS BedRock. While we temporarily use sa `OPENAI_API_KEY` for POC, we wil be using a `Service Principal` instead when we productize
+ - We will host the proxy in a highly available (99.99999%) and horizontal scaling cloud Envt, namely AWS (`EKS` or `ECS`)
+ - We will be storing the traces in a DataStore that can store semi-structured data, namely traces, embeddings,... - a good candidate is `Aurora PostgreSQL` with its `pgvector` extension for storing embeddings. Aurora gives us massive throughput and highly concurrent workloads 
+   - Why Aurora over RDS? Amazon Aurora is a good choice for mission-critical applications that require high availability and durability. It offers 99.999% availability and automatic failover. Amazon RDS can also be used for mission-critical applications, but it does not offer the same level of availability and durability as Amazon Aurora.
 
 
-#### Open source Candidate #1 - Arize Phoeniz
+### Open Source candidates
+ - [Arize Phoenix](#open-source-candidate-1---arize-phoenix)
+ - [Lite LLM Proxy](#open-source-candidate-2---litellm-proxy)
+ - and more...
 
-One good open source candidate is [Phoenix](https://docs.arize.com/phoenix). It is an open-source AI observability platform designed for experimentation, 
-evaluation, and troubleshooting. It provides:
+---
+
+#### Open Source Candidate #1 - Arize Phoenix
+
+[Arize Phoenix](https://docs.arize.com/phoenix) ([Phoenix Github](https://github.com/Arize-ai/phoenix)) is an open-source AI observability platform designed for experimentation, 
+evaluation, and troubleshooting. The license is Elastic License 2.0 (ELv2).  
+The current # of stars is 3.1k as of July 2024 and it keeps increasing.  
+<img src="images/phoenix-arize-star-trend.png" alt="phoenix-arise" width="300"/>
+
+It provides:
 - Tracing - Trace your LLM application's runtime using OpenTelemetry-based instrumentation.
 - Evaluation - Leverage LLMs to benchmark your application's performance using response and retrieval evals.
 - Datasets - Create versioned datasets of examples for experimentation, evaluation, and fine-tuning.
@@ -29,17 +47,7 @@ evaluation, and troubleshooting. It provides:
 - Inference Analysis - Visualize inferences and embeddings using dimensionality reduction and clustering to identify drift and performance degradation.
 
 
-Its [User Guide](https://docs.arize.com/phoenix/user-guide) indicates some interesting capabilities or our POC, namely:
-- **Prompt Engineering workspace**: create, manage, and experiment with prompt variations. 
-It offers tools for analyzing prompt performance, comparing outputs, and identifying patterns that lead to better results
-- **Search and retrieval Embedding Visualizer**: tracking embeddings and evaluating retrieval. 
-Phoenix's search and retrieval optimization tools include an embeddings visualizer that helps teams understand how their data is being represented and clustered. This visual insight can guide decisions on indexing strategies, similarity measures, and data organization to improve the relevance and efficiency of search results.
-- **Benchmark of Evals**: Phoenix allows teams to benchmark their evaluation metrics against industry standards or custom baselines.
-- **Evals Testing**: Phoenix's flexible evaluation framework supports thorough testing of LLM outputs. Teams can define custom metrics, collect user feedback, and leverage separate LLMs for automated assessment.
-- **Curate Data**: Phoenix assists in curating high-quality data for testing and fine-tuning. It provides tools for data exploration, cleaning, and labeling, enabling teams to curate representative data that covers a wide range of use cases and edge conditions.
-- **Fine tuning**: Phoenix and Arize together help teams identify data points for fine-tuning based on production performance and user feedback. This targeted approach ensures that fine-tuning efforts are directed towards the most impactful areas, maximizing the return on investment.
-
-
+See [User Guide](https://docs.arize.com/phoenix/user-guide) for more information about its capabilities.
 
 ##### Tracing Example
 Check [Traces overview](https://docs.arize.com/phoenix/tracing/llm-traces) for an overview of Phoenix Tracing.
@@ -56,16 +64,16 @@ You can start a chat with OpenAI and see live the prompts and answers in the Pho
 Check [Evals overview](https://docs.arize.com/phoenix/evaluation/llm-evals) for an overview of Phoenix evals with use of LLMs.
 Also check the [notebook eval examples](https://github.com/Arize-ai/phoenix/tree/main/tutorials/evals).  
 
-To see and example of evaluation, run:
+To see and example of evaluation, run a jupyter notebook.  You can use jupyter lab or other jupyter runtimes (Sagemaker,...).  
+The below notebook will load a set of traces and run 2 evaluators on it to detect any QA potential incorrectness along with Hallucination.
 ```commandline
-python scripts/phoenix-evals.py
+notebooks/phoenix_evaluate_quickstart.ipynb
 ```
 You can view the traces at `http://localhost:6006/`. Make sure to select `All Time` in the top right corner.
 
-You can also view this [eval notebook](notebooks/evals_quickstart_fab.ipynb)
-
-For an example of evaluation of hallucinations, check [hallucination evals notebook](notebooks/evaluate_hallucination_classifications.ipynb)
-For an example of evaluation of text summarization, check [summarization evals notebook](notebooks/evaluate_summarization_classifications.ipynb)
+- To visualize the notebook already run, check [evaluate quickstart notebook](notebooks/phoenix_evaluate_quickstart.ipynb)
+- For an example of evaluation of hallucinations, check [hallucination evals notebook](notebooks/phoenix_evaluate_hallucination_classifications.ipynb)
+- For an example of evaluation of text summarization, check [summarization evals notebook](notebooks/phoenix_evaluate_summarization_classifications.ipynb)
 
 ### Phoenix Tech Stack, Integration and deployment.
  
@@ -76,11 +84,20 @@ For an example of evaluation of text summarization, check [summarization evals n
  - The tracing is done with [OpenInference](https://github.com/Arize-ai/openinference?tab=readme-ov-file) and is complimentary to [OpenTelemetry](https://opentelemetry.io/) we are already using for Observability
 ### Phoenix Traces and Evaluation lifecycle 
 
-<img src="images/phoenix-arise.png" alt="phoenix-arise" width="700"/>
+<img src="images/phoenix-arise.png" alt="phoenix-arise" width="650"/>
+
+---
+### Open Source candidate #2 - LiteLLM Proxy
+
+[LiteLLM-proxy Github](https://github.com/BerriAI/liteLLM-proxy)
+
+---
+### Open Source candidate #3 - llm-proxy
+
+[llm-proxy Github](https://github.com/llm-proxy/llm-proxy)
 
 
-### Other open Source Candidates - TBD
-
+---
 
 ### Requirements
 Run
@@ -88,6 +105,7 @@ Run
 pip install -r requirements.txt
 ```
 
+---
 ### Resources
 Open Source package:
  - [Arize Phoenix](https://docs.arize.com/phoenix)
