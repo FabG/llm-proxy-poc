@@ -26,9 +26,17 @@ that can be candidate to build a transparent proxy across various LLM vendors su
 
 
 ### Open Source candidates
- - [Arize Phoenix](#open-source-candidate-1---arize-phoenix)
- - [Lite LLM](#open-source-candidate-2---litellm)
+ - [Arize Phoenix](#open-source-candidate-1---arize-phoenix) - Done
+ - [Lite LLM](#open-source-candidate-2---litellm) - In Progress
+ - [Langfuse](#open-source-candidate-3---langfuse) - To Do
+ - [Logfire](#open-source-candidate-4---logfire) - To Do
+ - [LLM Proxy](#open-source-candidate-5---llm-proxy) - To Do
  - and more...
+
+Here is a trend of the above open source candidates in regards to Github stars:  
+![llm-open-source-packages-trend.png](images/llm-open-source-packages-trend.png)  
+There is a clear leader: `litellm`, but some like `langfuse` are getting more traction while others are steadily increasing which is a good sign.
+
 
 ---
 
@@ -36,7 +44,8 @@ that can be candidate to build a transparent proxy across various LLM vendors su
 
 [Arize Phoenix](https://docs.arize.com/phoenix) ([Phoenix Github](https://github.com/Arize-ai/phoenix)) is an open-source AI observability platform designed for experimentation, 
 evaluation, and troubleshooting. The license is Elastic License 2.0 (ELv2).  
-The current # of stars is 3.1k as of July 2024 and it keeps increasing. <img src="images/phoenix-arize-git-stats.png" alt="phoenix-arise git stats" width="300"/>  
+The current # of stars is 3.1k as of July 2024 and it keeps increasing.  
+<img src="images/phoenix-arize-git-stats.png" alt="phoenix-arise git stats" width="300"/>  
 <img src="images/phoenix-arize-star-trend.png" alt="phoenix-arise" width="300"/>
 
 It provides:
@@ -99,7 +108,8 @@ The up to date project is now [LiteLLM](https://github.com/BerriAI/litellm)
 
 LiteLLM calls all LLM APIs using the OpenAI format [Bedrock, Anthropic, OpenAI, Huggingface, VertexAI, Groq etc.]
 
-The current # of stars is 10.8k as of July 2024 and it keeps increasing: <img src="images/liteLLM-git-stats.png" alt="liteLLM sgit stats" width="300"/>  
+The current # of stars is 10.8k as of July 2024 and it keeps increasing:  
+<img src="images/liteLLM-git-stats.png" alt="liteLLM sgit stats" width="300"/>  
 <img src="images/liteLLM-star-trend.png" alt="liteLLM star trend" width="300"/>
 
 
@@ -109,8 +119,11 @@ LiteLLM manages:
 - Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - Router
 - Set Budgets & Rate limits per project, api key, model OpenAI Proxy Server
 
-For our POC, we want to explore their [Logging](https://docs.litellm.ai/docs/proxy/logging) capabilities
-T
+For our POC, we want to explore their [Logging](https://docs.litellm.ai/docs/proxy/logging) capabilities, namely with:
+ - [Langfuse](https://docs.litellm.ai/docs/observability/langfuse_integration)
+ - [Logfire and OpenTelemetry](https://docs.litellm.ai/docs/observability/logfire_integration)
+ - 
+
 ##### Requirements
 Run
 ```commandline
@@ -140,19 +153,25 @@ To see an example of how it interfaces with multiple LLM providers, namely OpenA
 ```commandline
 python scripts/litellm-completion.py
 ```
-
----
-### Open Source candidate #3 - llm-proxy
-
-[llm-proxy Github](https://github.com/llm-proxy/llm-proxy)
-
-
+You can also look at this [liteLLM notebook](notebooks/liteLLM_Getting_Started.ipynb)
 
 
 ---
-### Resources
-Open Source package:
- - [Arize Phoenix](https://docs.arize.com/phoenix)
-   - [Arize Phoenix Github](https://github.com/Arize-ai/phoenix)  
- - [llm-proxy](https://github.com/llm-proxy/llm-proxy)
- - [Langfuse](https://langfuse.com/)
+### Open Source candidate #3 - langfuse
+
+[Langfuse](https://langfuse.com/) ([langfuse Github](https://github.com/langfuse/langfuse)) is an open source LLM engineering platform which provides Traces, evals, prompt management and metrics to debug and improve LLM applications.
+
+The current # of stars is 1.8k as of July 2024 and it keeps increasing:  
+<img src="images/langfuse-git-stats.png" alt="langfuse git stats" width="300"/>  
+<img src="images/langfuse-star-trend.png" alt="langfuse" width="300"/>
+
+---
+### Open Source candidate #4 - logfire
+
+[Pydantic Logfire](https://pydantic.dev/logfire) ([logfire Github](https://github.com/pydantic/logfire)) is open Source Observability & Analytics for LLM Apps Detailed production traces and a granular view on quality, cost and latency
+The current # of stars is 1.8k as of July 2024 and it keeps increasing:  
+<img src="images/logfire-git-stats.png" alt="logfire git stats" width="300"/>  
+<img src="images/logfire-star-trend.png" alt="logfire" width="300"/>
+
+
+
