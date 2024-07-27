@@ -27,7 +27,7 @@ that can be candidate to build a transparent proxy across various LLM vendors su
 
 ### Open Source candidates
  - [Arize Phoenix](#open-source-candidate-1---arize-phoenix)
- - [Lite LLM Proxy](#open-source-candidate-2---litellm-proxy)
+ - [Lite LLM](#open-source-candidate-2---litellm)
  - and more...
 
 ---
@@ -36,7 +36,7 @@ that can be candidate to build a transparent proxy across various LLM vendors su
 
 [Arize Phoenix](https://docs.arize.com/phoenix) ([Phoenix Github](https://github.com/Arize-ai/phoenix)) is an open-source AI observability platform designed for experimentation, 
 evaluation, and troubleshooting. The license is Elastic License 2.0 (ELv2).  
-The current # of stars is 3.1k as of July 2024 and it keeps increasing.  
+The current # of stars is 3.1k as of July 2024 and it keeps increasing. <img src="images/phoenix-arize-git-stats.png" alt="phoenix-arise git stats" width="300"/>  
 <img src="images/phoenix-arize-star-trend.png" alt="phoenix-arise" width="300"/>
 
 It provides:
@@ -52,6 +52,12 @@ See [User Guide](https://docs.arize.com/phoenix/user-guide) for more information
 ##### Tracing Example
 Check [Traces overview](https://docs.arize.com/phoenix/tracing/llm-traces) for an overview of Phoenix Tracing.
 Also check the [notebook tracing examples](https://github.com/Arize-ai/phoenix/tree/main/tutorials/tracing).  
+
+##### Requirements
+Run
+```commandline
+pip install -r requirements-phoenix.txt
+```
 
 To see and example of tracing with `OpenAI`, run:
 ```commandline
@@ -87,9 +93,53 @@ You can view the traces at `http://localhost:6006/`. Make sure to select `All Ti
 <img src="images/phoenix-arise.png" alt="phoenix-arise" width="650"/>
 
 ---
-### Open Source candidate #2 - LiteLLM Proxy
+### Open Source candidate #2 - LiteLLM
+To note the original project was called [liteLLM-proxy](https://github.com/BerriAI/liteLLM-proxy) but it is deprecated.  
+The up to date project is now [LiteLLM](https://github.com/BerriAI/litellm)
 
-[LiteLLM-proxy Github](https://github.com/BerriAI/liteLLM-proxy)
+LiteLLM calls all LLM APIs using the OpenAI format [Bedrock, Anthropic, OpenAI, Huggingface, VertexAI, Groq etc.]
+
+The current # of stars is 10.8k as of July 2024 and it keeps increasing: <img src="images/liteLLM-git-stats.png" alt="liteLLM sgit stats" width="300"/>  
+<img src="images/liteLLM-star-trend.png" alt="liteLLM star trend" width="300"/>
+
+
+LiteLLM manages:
+- Translate inputs to provider's completion, embedding, and image_generation endpoints
+- Consistent output, text responses will always be available at ['choices'][0]['message']['content']
+- Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - Router
+- Set Budgets & Rate limits per project, api key, model OpenAI Proxy Server
+
+For our POC, we want to explore their [Logging](https://docs.litellm.ai/docs/proxy/logging) capabilities
+T
+##### Requirements
+Run
+```commandline
+pip install -r requirements-litellm.txt
+```
+Step 1: Start litellm proxy
+```commandline
+$ litellm --model huggingface/bigcode/starcoder
+#INFO: Proxy running on http://0.0.0.0:4000
+``` 
+Step 2: Make ChatCompletions Request to Proxy
+```python
+import openai # openai v1.0.0+
+client = openai.OpenAI(api_key="anything",base_url="http://0.0.0.0:4000") # set proxy to base_url
+# request sent to model set on litellm proxy, `litellm --model`
+response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
+    {
+        "role": "user",
+        "content": "this is a test request, write a short poem"
+    }
+])
+
+print(response)
+```
+
+To see an example of how it interfaces with multiple LLM providers, namely OpenAI, Anthropic and Bedrock, run:
+```commandline
+python scripts/litellm-completion.py
+```
 
 ---
 ### Open Source candidate #3 - llm-proxy
@@ -97,13 +147,7 @@ You can view the traces at `http://localhost:6006/`. Make sure to select `All Ti
 [llm-proxy Github](https://github.com/llm-proxy/llm-proxy)
 
 
----
 
-### Requirements
-Run
-```commandline
-pip install -r requirements.txt
-```
 
 ---
 ### Resources
