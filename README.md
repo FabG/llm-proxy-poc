@@ -26,9 +26,9 @@ that can be candidate to build a transparent proxy across various LLM vendors su
 
 
 ### Open Source candidates
- - [Arize Phoenix](#open-source-candidate-1---arize-phoenix) - Done
- - [Lite LLM](#open-source-candidate-2---litellm) - In Progress
- - [Langfuse](#open-source-candidate-3---langfuse) - To Do
+ - [Arize Phoenix](#open-source-candidate-1---arize-phoenix) - Done (trace, eval and UI)
+ - [Lite LLM](#open-source-candidate-2---litellm) - Done (proxy)
+ - [Langfuse](#open-source-candidate-3---langfuse) - Done (trace, eval and UI)
  - [Logfire](#open-source-candidate-4---logfire) - To Do
  - [OpenLit](#open-source-candidate-5---openlit) - To Do
  - and more...
