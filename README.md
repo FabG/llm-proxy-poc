@@ -220,6 +220,19 @@ Here is an example of OpenAI Chat completion trace leveraging langfuse:
 ![langfuse example](images/langfuse-trace-example.png)
 
 
+You can annotate the traces you just logged with the script above with some scores you set in Settings. See more info [here](https://langfuse.com/docs/scores/annotation)  
+![trace example](images/langfuse-trace-annotation-example.png)
+
+
+###### Langfuse Model-based Evaluations.  
+Model-based evaluations (LLM-as-a-judge) are a powerful tool to automate the evaluation of LLM applications integrated with Langfuse. With model-based evalutions, LLMs are used to score a specific session/trace/LLM-call in Langfuse on criteria such as correctness, toxicity, or hallucinations.
+You can fine more info [here](https://langfuse.com/docs/scores/model-based-evals)
+
+You can fine 2 notebooks that showcase evaluation here:  
+ - [langfuse_evaluate_langchain.ipynb](notebooks%2Flangfuse_evaluate_langchain.ipynb)
+ - [langfuse_evaluate_uptrain.ipynb](notebooks%2Flangfuse_evaluate_uptrain.ipynb)
+
+
 
 
 ---
