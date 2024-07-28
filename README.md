@@ -30,14 +30,24 @@ that can be candidate to build a transparent proxy across various LLM vendors su
  - [Lite LLM](#open-source-candidate-2---litellm) - In Progress
  - [Langfuse](#open-source-candidate-3---langfuse) - To Do
  - [Logfire](#open-source-candidate-4---logfire) - To Do
- - [LLM Proxy](#open-source-candidate-5---llm-proxy) - To Do
+ - [OpenLit](#open-source-candidate-5---openlit) - To Do
  - and more...
 
 Here is a trend of the above open source candidates in regards to Github stars:  
-![llm-open-source-packages-trend.png](images/llm-open-source-packages-trend.png)  
+<img src="images/llm-open-source-packages-trend.png" alt="open source packages" width="600"/>  
 There is a clear leader: `litellm`, but some like `langfuse` are getting more traction while others are steadily increasing which is a good sign.
 
+| Package  | License | Procured | Stars | Proxy | Tracing | Evaluation | DataSets | Common interface to LLMs | Web Client | OTL compatible |
+|:---------|:-------:|:--------:|:-----:|:-----:|:-------:|:----------:|:--------:|:------------------------:|:----------:|:--------------:|
+| Phoenix  |  ELv2   |    Y     | 3.1k  |   -   |    X    |     X      |    X     |            -             |     X      |       X        |
+| Lite LLM |   MIT   |    Y     | 10.8k |   X   |    X    |     -      |    -     |            X             |     -      |       X        |
+| Langfuse |  MIT*   |    N     |  5k   |   -   |    X    |     X      |    X     |            -             |     X      |       X        |
+| Logfire  |   MIT   |    N     | 1.8k  |       |         |            |          |                          |            |                |
+| OpenLit  | Apache  |    N     |  579  |       |         |            |          |                          |            |                |
+| TBD      |         |          |       |       |         |            |          |                          |            |                |
 
+
+* Langfuse is under MOT license with the exception of the `/ee` and `/web/src/ee`
 ---
 
 #### Open Source Candidate #1 - Arize Phoenix
@@ -55,6 +65,7 @@ It provides:
 - Experiments - Track and evaluate changes to prompts, LLMs, and retrieval.
 - Inference Analysis - Visualize inferences and embeddings using dimensionality reduction and clustering to identify drift and performance degradation.
 
+It is currently procured and available in our private jFrog artifactory: `litellm-1.37.14`
 
 See [User Guide](https://docs.arize.com/phoenix/user-guide) for more information about its capabilities.
 
@@ -112,6 +123,7 @@ The current # of stars is 10.8k as of July 2024 and it keeps increasing:
 <img src="images/liteLLM-git-stats.png" alt="liteLLM sgit stats" width="300"/>  
 <img src="images/liteLLM-star-trend.png" alt="liteLLM star trend" width="300"/>
 
+It is currently procured and available in our private jFrog artifactory: `litellm-1.37.14`
 
 LiteLLM manages:
 - Translate inputs to provider's completion, embedding, and image_generation endpoints
@@ -120,9 +132,11 @@ LiteLLM manages:
 - Set Budgets & Rate limits per project, api key, model OpenAI Proxy Server
 
 For our POC, we want to explore their [Logging](https://docs.litellm.ai/docs/proxy/logging) capabilities, namely with:
- - [Langfuse](https://docs.litellm.ai/docs/observability/langfuse_integration)
- - [Logfire and OpenTelemetry](https://docs.litellm.ai/docs/observability/logfire_integration)
- - 
+ - [Langfuse](https://docs.litellm.ai/docs/observability/langfuse_integration) - To Do
+ - [OpenTelemetry](https://docs.litellm.ai/docs/proxy/logging#logging-proxy-inputoutput-in-opentelemetry-format) - To Do
+ - [Logfire and OpenTelemetry](https://docs.litellm.ai/docs/observability/logfire_integration) - To Do
+ - [Traceloop and OpenTelemetry](https://litellm.vercel.app/docs/observability/traceloop_integration) - To Do
+
 
 ##### Requirements
 Run
@@ -165,6 +179,49 @@ The current # of stars is 1.8k as of July 2024 and it keeps increasing:
 <img src="images/langfuse-git-stats.png" alt="langfuse git stats" width="300"/>  
 <img src="images/langfuse-star-trend.png" alt="langfuse" width="300"/>
 
+Langfuse offers the below capabilities:  
+**Develop**
+- Observability: Instrument your app and start ingesting traces to Langfuse
+- Langfuse UI: Inspect and debug complex logs
+- Prompt Management: Manage, version and deploy prompts from within Langfuse
+- Prompt Engineering: Test and iterate on your prompts with the LLM Playground
+
+**Monitor**
+- Analytics: Track metrics (cost, latency, quality) and gain insights from dashboards & data exports
+- Evals: Collect and calculate scores for your LLM completions
+  - Run model-based evaluations within Langfuse
+  - Collect user feedback
+  - Manually score observations in Langfuse
+
+**Test**
+- Experiments: Track and test app behaviour before deploying a new version
+- Datasets let you test expected in and output pairs and benchmark performance before deploying
+- Track versions and releases in your application
+
+Langfuse Server, which includes the API and Web UI, is open-source and can be [self-hosted](https://langfuse.com/docs/deployment/self-host) using Docker.  
+It integrates with `PostgreSQL`
+
+For local demo/testing, one can use the [Local(docker compose) deployment](https://langfuse.com/docs/deployment/local).  
+You can also see a video demo [here](https://langfuse.com/guides/videos/introducing-langfuse-2.0)
+
+To use langfuse, please create an account, then a project and a set of public/secret keys at: [langfuse signup](https://cloud.langfuse.com/auth/sign-up)
+To see it in action, first install the package:
+```commandline
+pip install -r requirements-langfuse.txt
+```
+
+Then run:
+```commandline
+python scripts/langfuse-tracing.py
+```
+
+and log to langfuse interface to see the traces.
+Here is an example of OpenAI Chat completion trace leveraging langfuse:  
+![langfuse example](images/langfuse-trace-example.png)
+
+
+
+
 ---
 ### Open Source candidate #4 - logfire
 
@@ -174,4 +231,6 @@ The current # of stars is 1.8k as of July 2024 and it keeps increasing:
 <img src="images/logfire-star-trend.png" alt="logfire" width="300"/>
 
 
-
+---
+### Open Source candidate #5 - OpenLit
+[OpenLit](https://openlit.io/) ([OpeLit Github](https://github.com/openlit/openlit)) is an OpenTelemetry-native tool designed to help developers gain insights into the performance of their LLM applications in production. It automatically collects LLM input and output metadata, and monitors GPU performance for self-hosted LLMs.
