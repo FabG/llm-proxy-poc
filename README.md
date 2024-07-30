@@ -9,6 +9,7 @@ that can be candidate to build a transparent proxy across various LLM vendors su
  - Dataset creation and Data **annotation** 
  - LLM Response **evaluation** leveraging other LLMs and golden datasets
  - SPA **UI** for easy review, annotation,... of the traces, datasets, evaluations,...
+ - **Guardrail** to detect, quantify and mitigate the presence of specific types of risks (toxicity, PII, profanity, ...)
  - Ease of integration in consumer code - there should be no change to the LLM API code
 
 **Nice to Have**:
@@ -29,25 +30,31 @@ that can be candidate to build a transparent proxy across various LLM vendors su
  - [Arize Phoenix](#open-source-candidate-1---arize-phoenix) - Done (trace, eval and UI)
  - [Lite LLM](#open-source-candidate-2---litellm) - Done (proxy)
  - [Langfuse](#open-source-candidate-3---langfuse) - Done (trace, eval and UI)
+ - [Lite LLM + Langfuse](#combining-2-open-source-candidates-litellm-proxy--langfuse) - To Do
  - [Logfire](#open-source-candidate-4---logfire) - To Do
  - [OpenLit](#open-source-candidate-5---openlit) - To Do
  - and more...
+
+One idea would be to integrate `Lite LLM` proxy with one of the Tracing/Eval packages such as `Phoenix` or `Langfuse`
+Here is an example of [python cookbook](https://langfuse.com/docs/integrations/litellm/example-proxy-python) to install both LLM Proxy and Langfuse: 
 
 Here is a trend of the above open source candidates in regards to Github stars:  
 <img src="images/llm-open-source-packages-trend.png" alt="open source packages" width="600"/>  
 There is a clear leader: `litellm`, but some like `langfuse` are getting more traction while others are steadily increasing which is a good sign.
 
-| Package  | License | Procured | Stars | Proxy | Tracing | Evaluation | DataSets | Common interface to LLMs | Web Client | OTL compatible |
-|:---------|:-------:|:--------:|:-----:|:-----:|:-------:|:----------:|:--------:|:------------------------:|:----------:|:--------------:|
-| Phoenix  |  ELv2   |    Y     | 3.1k  |   -   |    X    |     X      |    X     |            -             |     X      |       X        |
-| Lite LLM |   MIT   |    Y     | 10.8k |   X   |    X    |     -      |    -     |            X             |     -      |       X        |
-| Langfuse |  MIT*   |    N     |  5k   |   -   |    X    |     X      |    X     |            -             |     X      |       X        |
-| Logfire  |   MIT   |    N     | 1.8k  |       |         |            |          |                          |            |                |
-| OpenLit  | Apache  |    N     |  579  |       |         |            |          |                          |            |                |
-| TBD      |         |          |       |       |         |            |          |                          |            |                |
+| Package  | License | Procured | Stars | Proxy | Tracing | Evaluation | DataSets | Guardrail | Common interface to LLMs | Web Client | OTL compatible |
+|:---------|:-------:|:--------:|:-----:|:-----:|:-------:|:----------:|:--------:|:---------:|:------------------------:|:----------:|:--------------:|
+| Lite LLM |   MIT   |    Y     | 10.8k |   X   |    X    |     -      |    -     |     X     |            X             |     -      |       X        |
+| Phoenix  |  ELv2   |    Y     | 3.1k  |   -   |    X    |     X      |    X     |    X**    |            -             |     X      |       X        |
+| Langfuse |  MIT*   |    N     |  5k   |   -   |    X    |     X      |    X     |     ~     |            -             |     X      |       X        |
+| Logfire  |   MIT   |    N     | 1.8k  |       |         |            |          |           |                          |            |                |
+| OpenLit  | Apache  |    N     |  579  |       |         |            |          |           |                          |            |                |
+| TBD      |         |          |       |       |         |            |          |           |                          |            |                |
 
 
-* Langfuse is under MOT license with the exception of the `/ee` and `/web/src/ee`
+X* Langfuse is under MOT license with the exception of the `/ee` and `/web/src/ee`
+~ Langfuse integrates with multiple security libraries for leakage of PII info,, harmful prompts: LLM Guard, Prompt Armor, NeMo Guardrails, Microsoft Azure AI Content Safety, Lakera. 
+X** Guardrail span kind added on 07/18 as part of `arize-phoenix v4.11.0`
 ---
 
 #### Open Source Candidate #1 - Arize Phoenix
@@ -231,6 +238,14 @@ You can fine more info [here](https://langfuse.com/docs/scores/model-based-evals
 You can fine 2 notebooks that showcase evaluation here:  
  - [langfuse_evaluate_langchain.ipynb](notebooks%2Flangfuse_evaluate_langchain.ipynb)
  - [langfuse_evaluate_uptrain.ipynb](notebooks%2Flangfuse_evaluate_uptrain.ipynb)
+
+
+
+### Combining 2 open source candidates: LiteLLM (Proxy) + Langfuse
+Here is a [cookbook](https://langfuse.com/docs/integrations/litellm/example-proxy-python) that show case how we can integrate:
+- **LiteLLM Proxy** which standardizes 100+ model provider APIs on the OpenAI API schema. It removes the complexity of direct API calls by centralizing interactions with these APIs through a single endpoint. You can also self-host the LiteLLM Proxy as it is open-source.
+- **Langfuse OpenAI SDK Wrapper** (Python) to natively instrument calls to all these 100+ models via the OpenAI SDK. This automatically captures token counts, latencies, streaming response times (time to first token), api errors, and more.
+- **Langfuse**: OSS LLM Observability, full overview here.
 
 
 
